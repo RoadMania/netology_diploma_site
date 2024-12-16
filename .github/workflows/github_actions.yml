@@ -30,4 +30,4 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           sudo kubectl set image deployment/diplom-app web-container=spencer98/netology-diploma-site:latest
-          sudo kubectl rollout status deployment/my-diploma-site
+          sudo kubectl rollout status deployment/diplom-app
