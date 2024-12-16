@@ -1,0 +1,14 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main  # Запускать при каждом коммите в ветку main
+
+jobs:
+  build:
+    runs-on: self-hosted  # Используйте self-hosted агент
+
+    steps:
+      - name: list
+        run: ls -la
