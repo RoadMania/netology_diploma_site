@@ -18,11 +18,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build . -t spencer98/netology-diploma-site:latest
+          sudo docker build . -t spencer98/netology-diploma-site:latest
 
       - name: Push Docker image
         run: |
-          docker pushspencer98/netology-diploma-site:latest
+          sudo docker push spencer98/netology-diploma-site:latest
 
       - name: Set up Kubernetes context
         run: |
@@ -31,5 +31,5 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl set image deployment/my-diploma-site web-container=spencer98/netology-diploma-site:latest --record
-          kubectl rollout status deployment/my-diploma-site
+          sudo kubectl set image deployment/my-diploma-site web-container=spencer98/netology-diploma-site:latest --record
+          sudo kubectl rollout status deployment/my-diploma-site
