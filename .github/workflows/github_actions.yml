@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build and Deploy to Kubernetes
 
 on:
   push:
@@ -7,8 +7,29 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted  # Используйте self-hosted агент
+    runs-on: self-hosted  # Использовать self-hosted агент
 
     steps:
-      - name: list
-        run: ls -la
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build Docker image
+        run: |
+          docker build . -t spencer98/netology-diploma-site:latest
+
+      - name: Push Docker image
+        run: |
+          docker pushspencer98/netology-diploma-site:latest
+
+      - name: Set up Kubernetes context
+        run: |
+          echo "${{ secrets.KUBE_CONFIG }}" > kubeconfig
+          export KUBECONFIG=$(pwd)/kubeconfig
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl set image deployment/my-diploma-site web-container=spencer98/netology-diploma-site:latest --record
+          kubectl rollout status deployment/my-diploma-site
